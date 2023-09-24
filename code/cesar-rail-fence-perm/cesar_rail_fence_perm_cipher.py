@@ -1,8 +1,6 @@
-from base_cypher import BaseCipher
-import constants
+from base_cipher import BaseCipher
 
-class CesarCypher(BaseCipher):
-
+class CesarRailFencePermCipher(BaseCipher):
     def encrypt(plain_text: str, key: str) -> str:
         pass
 
@@ -12,6 +10,5 @@ class CesarCypher(BaseCipher):
     def try_decrypt_without_key(plain_text: str) -> str:
         pass
 
-
-    def try_get_key(plain_text: str, encrypted_text: str) -> str:
+    def try_get_key(plain_text: str, cipher_text: str) -> str:
         pass

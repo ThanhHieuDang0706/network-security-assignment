@@ -19,6 +19,6 @@ class BaseCipher(ABC):
 
     @staticmethod
     @abstractmethod
-    def try_get_key(plain_text: str, encrypted_text: str) -> str:
+    def try_get_key(plain_text: str, cipher_text: str) -> str:
         pass
     
