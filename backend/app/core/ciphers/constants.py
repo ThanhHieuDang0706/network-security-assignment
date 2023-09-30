@@ -1,6 +1,6 @@
 from enum import Enum
 
-DEFAULT_KEY = 'default'
+DEFAULT_KEY = 1
 
 class CipherType(Enum):
     CESAR = 'cesar',

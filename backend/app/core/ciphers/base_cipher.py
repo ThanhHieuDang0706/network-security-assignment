@@ -1,15 +1,15 @@
 from abc import ABC, abstractmethod, staticmethod
-import constants
+import backend.app.core.ciphers.constants as constants
 
 class BaseCipher(ABC):
     @abstractmethod
     @staticmethod
-    def encrypt(plain_text: str, key: str = constants.DEFAULT_KEY) -> str:
+    def encrypt(plain_text: str, key = constants.DEFAULT_KEY) -> str:
         pass
 
     @abstractmethod
     @staticmethod
-    def decrypt(plain_text: str, key: str = constants.DEFAULT_KEY) -> str:
+    def decrypt(plain_text: str, key = constants.DEFAULT_KEY) -> str:
         pass
 
     @staticmethod

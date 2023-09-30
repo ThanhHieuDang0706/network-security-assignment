@@ -1,10 +1,10 @@
-from base_cipher import BaseCipher
+from backend.app.core.ciphers.base_cipher import BaseCipher
 
 class RailFenceCipher(BaseCipher):
-    def encrypt(plain_text: str, key: str) -> str:
+    def encrypt(plain_text: str, key: int) -> str:
         pass
 
-    def decrypt(plain_text: str, key: str) -> str:
+    def decrypt(plain_text: str, key: int) -> str:
         pass
 
     def try_decrypt_without_key(plain_text: str) -> str:
