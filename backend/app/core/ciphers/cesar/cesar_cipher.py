@@ -1,5 +1,5 @@
-from backend.app.core.ciphers.base_cipher import BaseCipher
-import backend.app.core.ciphers.constants as constants
+from app.core.ciphers.base_cipher import BaseCipher
+import app.core.ciphers.constants as constants
 
 class CesarCipher(BaseCipher):
     def __init__(self):

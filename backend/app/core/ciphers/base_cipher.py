@@ -1,5 +1,5 @@
-from abc import ABC, abstractmethod, staticmethod
-import backend.app.core.ciphers.constants as constants
+from abc import ABC, abstractmethod
+import app.core.ciphers.constants as constants
 
 class BaseCipher(ABC):
     def __init__(self):
