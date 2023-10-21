@@ -25,11 +25,6 @@ export default function CipherForm() {
         try {
             if (!input.content || !input.key || Number(input.key) <= 0) return alert("Vui lòng nhập đầy đủ thông tin");
             setLoading(true);
-            console.log({
-                plain_text: input.content[cipher],
-                key: parseInt(input.key[cipher]),
-                type: cipher
-            });
             const value = await encrypt({
                 plain_text: input.content[cipher],
                 key: parseInt(input.key[cipher]),
