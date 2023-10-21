@@ -1,4 +1,4 @@
-from app.core.ciphers.constants import CipherType
+from core.ciphers.constants import CipherType
 from pydantic import BaseModel
 from typing import Optional
 

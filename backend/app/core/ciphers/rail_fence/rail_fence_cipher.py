@@ -1,5 +1,5 @@
-from app.core.ciphers.base_cipher import BaseCipher
-from app.core.ciphers.constants import CipherType 
+from core.ciphers.base_cipher import BaseCipher
+from core.ciphers.constants import CipherType 
 
 class RailFenceCipher(BaseCipher):
     def __init__(self):
