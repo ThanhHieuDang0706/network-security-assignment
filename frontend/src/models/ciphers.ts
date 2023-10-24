@@ -13,6 +13,27 @@ export interface EncryptionRequest extends CipherBase {
     plain_text: string
 }
 
-export interface EncryptionResponse {
+export interface EncryptionResponse extends CipherBase {
     cipher_text: string;
+    plain_text: string;
+}
+
+export interface DecryptionRequest extends CipherBase {
+    key: number;
+    cipher_text: string
+}
+
+export interface DecryptionResponse extends CipherBase {
+    plain_text: string;
+    cipher_text: string;
+}
+
+export interface DecryptionWithoutKeyRequest extends CipherBase {
+    cipher_text: string
+}
+
+export interface DecryptionWithoutKeyResponse {
+    possible_keys: {
+        [key: number]: string;
+    }
 }

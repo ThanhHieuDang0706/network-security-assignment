@@ -21,7 +21,7 @@ class DecryptionResponse(BaseCipherModel):
     cipher_text: str
     plain_text: str
 
-class DecryptionWithoutKeyRequest(BaseModel):
+class DecryptionWithoutKeyRequest(BaseCipherModel):
     cipher_text: str
 
 class DecryptionWithoutKeyResponse(BaseModel):

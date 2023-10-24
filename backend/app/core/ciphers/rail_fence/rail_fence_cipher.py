@@ -1,6 +1,8 @@
 from core.ciphers.base_cipher import BaseCipher
 from core.ciphers.constants import CipherType 
 
+PLACE_HOLDER = "$"
+
 class RailFenceCipher(BaseCipher):
     def __init__(self):
         self.type = CipherType.RAIL_FENCE
@@ -10,18 +12,22 @@ class RailFenceCipher(BaseCipher):
         for i in range(key):
             rail.append([])
             for j in range(len(text)):
-                rail[i].append('\n')
+                rail[i].append(PLACE_HOLDER)
         return rail
 
     def encrypt(self, plain_text: str, key: int) -> str:
         rail = self.init_rail(key, plain_text)
         go_down = False
         row = 0
-
-        for colIndex in range(len(plain_text)):
-            rail[row][colIndex] = plain_text[colIndex]
+        col = 0
+        for i in range(len(plain_text)):
+            
             if row == 0 or row == key - 1:
                 go_down = not go_down
+
+            rail[row][col] = plain_text[i]
+            col += 1
+            
             if go_down:
                 row += 1
             else:
@@ -30,9 +36,8 @@ class RailFenceCipher(BaseCipher):
         result = ""
         for i in range(key):
             for j in range(len(plain_text)):
-                if rail[i][j] != '\n':
+                if rail[i][j] != PLACE_HOLDER:
                     result += rail[i][j]
-
         return "".join(result)
 
     def decrypt(self, cipher_text: str, key: int) -> str:
@@ -40,10 +45,16 @@ class RailFenceCipher(BaseCipher):
         go_down = False
         
         row = 0
-        for colIndex in range(len(cipher_text)):
-            rail[row][colIndex] = '*'
-            if row == 0 or row == key - 1:
-                go_down = not go_down
+        col = 0
+        for i in range(len(cipher_text)):
+            if row == 0: 
+                go_down = True
+            if row == key - 1:
+                go_down = False
+            
+            rail[row][col] = '*'
+            col += 1
+
             if go_down:
                 row += 1
             else:
@@ -59,22 +70,29 @@ class RailFenceCipher(BaseCipher):
 
         result = ""
         row = 0
-        go_down = False
-        for colIndex in range(len(cipher_text)):
-            if row == 0 or row == key - 1:
-                go_down = not go_down
-            result += rail[row][colIndex]
+        col = 0
+        for i in range(len(cipher_text)):
+            if row == 0:
+                go_down = True
+            if row == key - 1:
+                go_down = False
+            
+            if rail[row][col] != PLACE_HOLDER:
+                result += rail[row][col]
+                col += 1
+            
             if go_down:
                 row += 1
             else:
                 row -= 1
-
+                
         return "".join(result)
 
-    def try_decrypt_without_key(self, plain_text: str) -> dict[int, str]:
-        result = []
-        for i in range(2, len(plain_text)):
-            result.append(self.decrypt(plain_text, i))
+    def try_decrypt_without_key(self, cipher_text: str) -> dict[int, str]:
+        result = {}
+        for i in range(2, len(cipher_text)):
+            result[i] = self.decrypt(cipher_text, i)
+        return result
 
     def try_get_key(self, plain_text: str, cipher_text: str) -> int:
         decrypted_results = self.try_decrypt_without_key(cipher_text)

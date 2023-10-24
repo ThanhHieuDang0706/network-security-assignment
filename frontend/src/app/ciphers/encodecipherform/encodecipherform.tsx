@@ -1,16 +1,20 @@
 "use client"
 
 import { useContext, useEffect, useState } from "react";
-import { CipherContext } from "./cipher";
+import { CipherContext } from "../cipher";
 import { encrypt } from "@/services/ciphers";
 import Results from "./results";
 
-export default function CipherForm() {
+export default function EncodeCipherForm() {
     
+    const { cipher, } = useContext(CipherContext);
 
-    const [result, setResult] = useState("");
+    const [loading, setLoading] = useState(false);
 
-    const { cipher, loading, setLoading } = useContext(CipherContext);
+    const [result, setResult] = useState({
+        [cipher]: ""
+    });
+
 
     const [input, setInput] = useState({
         content: {
@@ -32,7 +36,10 @@ export default function CipherForm() {
             });
     
             if (value.cipher_text) {
-                setResult(value.cipher_text);
+                setResult({
+                    ...result,
+                    [cipher]: value.cipher_text
+                });
             }
         }
         catch (error) {
@@ -53,13 +60,14 @@ export default function CipherForm() {
                 [cipher]: input.key[cipher] || "",
                 ...input.key
             }
-        })
-    }, [cipher, input.content, input.key])
+        });
+    }, [cipher])
     
     return (
-        <>
-            <div className="py-4 form-control">
-                <textarea onChange={(event) => { 
+        <div className=" py-4 ">
+            <h3 className="card-title"> Mã hóa </h3>
+            <form onSubmit={(e) => { e.preventDefault(); onClickMaHoa(); }} className="py-4 form-control">
+                <textarea required onChange={(event) => { 
                     setInput({
                         ...input,
                         content: {
@@ -67,9 +75,9 @@ export default function CipherForm() {
                             [cipher]: event.currentTarget.value
                         }
                     });     
-                }} value={input.content[cipher]} className="textarea h-24 textarea-bordered textarea-sm" placeholder="Nội dung" />
+                }} value={input.content[cipher]} className="textarea h-24 textarea-bordered textarea-sm textarea-info" placeholder="Nội dung" />
                 
-                <input value={input.key[cipher]} onChange={(value) => {
+                <input min="0" required value={input.key[cipher]} onChange={(value) => {
                     setInput({
                         ...input,
                         key: {
@@ -79,24 +87,18 @@ export default function CipherForm() {
                     });
                     
 
-                }} type="number" className="mt-4 w-24 input input-bordered input-sm" placeholder="Khóa" />
-            </div>
-            <div className="flex gap-2">
-                <button disabled={loading} onClick={onClickMaHoa} className="btn btn-sm btn-info text-white">
-                    Mã hóa
-                </button>
-                <button disabled={loading} className="btn btn-sm btn-error text-white">
-                    Giải mã
-                </button>
-            </div>
+                }} type="number" className="mt-4 w-24 input input-bordered input-sm input-info" placeholder="Khóa" />
+                <div className="mt-4">
+                    <button disabled={loading} type="submit" className="btn btn-sm btn-info text-white">
+                        Mã hóa
+                    </button>
+                </div>
+            </form>
             {
-                loading && (<span className="loading loading-spinner text-accent text-center"></span>)
-            }
-            {
-                result && (
-                    <Results results={result} />
+                result[cipher] && (
+                    <Results loading={loading} results={result[cipher]} />
                 )
             }
-        </>
+        </div>
     );
 }

@@ -18,7 +18,6 @@ async def encrypt(request: EncryptionRequest):
         if (cipher is None):
             return HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Cipher not found")
         cipher_text = cipher.encrypt(request.plain_text, request.key)
-
         return EncryptionResponse(type=request.type, cipher_text=cipher_text, plain_text=request.plain_text)
         
     except Exception as e:
@@ -48,8 +47,8 @@ async def decrypt_without_key(request: DecryptionWithoutKeyRequest):
         if (cipher is None):
             return HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Cipher not found")
     
-        possible_keys = cipher.decrypt_without_key(request.cipher_text)
-        return DecryptionWithoutKeyResponse(cipher_text=request.cipher_text, possible_keys=possible_keys)
+        possible_keys = cipher.try_decrypt_without_key(request.cipher_text)
+        return DecryptionWithoutKeyResponse(possible_keys=possible_keys)
         
     except Exception as e: 
         print(e)

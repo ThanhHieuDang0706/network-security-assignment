@@ -11,7 +11,7 @@ class CesarCipher(BaseCipher):
     def decrypt(self, cipher_text: str, key: str) -> str:
         pass
 
-    def try_decrypt_without_key(self, plain_text: str) -> dict[int, str]:
+    def try_decrypt_without_key(self, cipher_text: str) -> dict[int, str]:
         pass
 
     def try_get_key(self, plain_text: str, cipher_text: str) -> str:

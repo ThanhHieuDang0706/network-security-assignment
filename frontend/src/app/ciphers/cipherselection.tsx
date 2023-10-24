@@ -22,18 +22,19 @@ export default function CipherSelection() {
         }
     ];
 
+    
+
     return (
         <>
-            <div className="tabs tabs-boxed gap-2 mb-4">
-                {
-                    selections.map((selection, index) => {
-                        return (
-                            <a onClick={() => setCipher(selection.value)} className={`tab tab-md ${cipher == selection.value ? "tab-active" : null}`} key={index}>
-                                {selection.name}
-                            </a>
-                        )
-                    })
-                }
+            <div className="mt-4">
+                <label className="label">
+                    <span className="label-text">Bộ mã</span>
+                </label>
+                <select className="select w-full max-w-xs select-sm select-bordered" value={cipher} onChange={(e) => setCipher(e.currentTarget.value as CipherType)}>
+                    {selections.map((selection, index) => (
+                        <option key={selection.value} value={selection.value}>{selection.name}</option>
+                    ))}
+                </select>
             </div>
         </>
     );
