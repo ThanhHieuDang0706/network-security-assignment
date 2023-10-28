@@ -1,4 +1,3 @@
-import ListSkeleton from "@/components/ListSkeleton";
 import { useEffect, useState } from "react";
 
 interface Props {

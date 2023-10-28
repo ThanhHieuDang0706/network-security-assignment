@@ -1,9 +1,8 @@
 "use client"
-
 import { useContext, useEffect, useState } from "react";
-import { CipherContext } from "../cipher";
 import { decryptWithoutKey } from "@/services/ciphers";
 import Results from "./results";
+import { CipherContext } from "@/app/page";
 
 export default function DecodeWithoutKeyCipherForm() {
     

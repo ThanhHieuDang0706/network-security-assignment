@@ -1,5 +1,4 @@
 import { useContext } from "react";
-import { CipherContext } from "../cipher";
 
 export default function Results(props: { results: string, loading: boolean }) {
     const element = Array.isArray(props.results) ? props.results.map((result, index) => (

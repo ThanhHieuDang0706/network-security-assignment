@@ -1,5 +1,5 @@
 from core.ciphers.base_cipher import BaseCipher
-from core.ciphers.constants import CipherType 
+from core.ciphers.constants import CipherType, NOT_FOUND_KEY
 
 PLACE_HOLDER = "$"
 
@@ -95,8 +95,11 @@ class RailFenceCipher(BaseCipher):
         return result
 
     def try_get_key(self, plain_text: str, cipher_text: str) -> int:
-        decrypted_results = self.try_decrypt_without_key(cipher_text)
-        for i in range(len(decrypted_results)):
-            if decrypted_results[i] == plain_text:
-                """The key is i + 2 because the key starts at 2 and not 0"""
-                return i + 2
+        if (len(plain_text) != len(cipher_text)):
+            return NOT_FOUND_KEY
+        
+        for i in range(2, len(cipher_text)):
+            if self.decrypt(cipher_text, i) == plain_text:
+                return i
+            
+        return NOT_FOUND_KEY

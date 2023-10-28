@@ -1,5 +1,4 @@
 import { useContext } from "react";
-import { CipherContext } from "../cipher";
 
 
 export default function Results(props: { results: string, loading: boolean }) {
@@ -10,7 +9,7 @@ export default function Results(props: { results: string, loading: boolean }) {
     if (props.loading) return (
         <div className="animate-pulse">
             <span className="text-blue-400 font-semibold">Kết quả: </span>
-            <p className="inline text-base">Đang xử lý...</p>
+            <span className="loading loading-dots loading-sm"></span>
         </div>
     );
 

@@ -2,6 +2,8 @@ from enum import Enum
 
 DEFAULT_KEY = 1
 
+NOT_FOUND_KEY = -1
+
 class CipherType(str, Enum):
     BASE = "base",
     CESAR = "cesar",
