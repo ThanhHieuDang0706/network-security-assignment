@@ -5,17 +5,12 @@ import { ReactNode, createContext, useContext, useState } from "react";
 import EncodeCipherForm from "./ciphers/encodecipherform/encodecipherform";
 import DecodeCipherForm from "./ciphers/decodercipherform/decodecipherform";
 import DecodeWithoutKeyCipherForm from "./ciphers/decodewithoutkeyform/decodewithoutform";
+import classNames from "classnames";
 
 export const CipherContext = createContext({
     cipher: CipherType.Caesar,
     setCipher: (cipher: CipherType) => {}
 });
-
-export function CipherProvider(props: { chidren: ReactNode }) {
-    const [cipher, setCipher] = useState(CipherType.Caesar);
-
-    return <CipherContext.Provider value={{ cipher, setCipher }}>{props.chidren}</CipherContext.Provider>;
-}
 
 export default function Home() {
     const selections = [
@@ -33,11 +28,11 @@ export default function Home() {
         }
     ];
 
-    const { cipher, setCipher } = useContext(CipherContext);
+    const [cipher, setCipher] = useState(CipherType.Caesar);
 
     return (
-        <>
-            <div className="px-32 bg-slate-100 navbar bg-base-100 fixed z-50">
+        <CipherContext.Provider value={{ cipher, setCipher }}>
+            <div className="px-32 bg-slate-100 navbar fixed z-50">
                 <div className="flex-none">
                     <a className="btn btn-square btn-ghost">
                         <Image
@@ -52,26 +47,31 @@ export default function Home() {
                 </div>
                 <div className="flex-1 gap-4">
                     <a className="btn btn-ghost normal-case text-xl">Bách Khoa Cipher</a>
-                    <div className="tabs flex-1 gap-4">
+                    <nav className="tabs cursor-pointer flex-1 gap-2 ">
                         {selections.map((value) => {
                             return (
                                 <a
                                     key={value.value}
-                                    className={"capitalize cursor-pointer tab tab-boredred" + value.value == cipher ? "tab-active" : ""}
-                                    onClick={(item) => {
-                                        item.preventDefault();
-                                        item.stopPropagation();
+                                    className={classNames(
+                                        "capitalize cursor-pointer tab tab-boredred",
+                                        cipher == value.value ? "tab-active tab-border-2 border-b-2 transition-all accent-current" : ""
+                                    )}
+                                    onClick={(e) => {
+                                        console.log(e);
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        console.log(setCipher);
                                         setCipher(value.value);
                                     }}>
                                     {value.name}
                                 </a>
                             );
                         })}
-                    </div>
+                    </nav>
                 </div>
             </div>
-            <main className="flex bg-slate-50 flex-col py-16 px-32 card">
-                <CipherContext.Provider value={{ cipher, setCipher }}>
+            <main className="flex bg-slate-50 flex-col py-24 px-32 card">
+                <>
                     <div className="card bg-base-100 shadow-xl min-w-full px-4 my-2">
                         <EncodeCipherForm />
                     </div>
@@ -83,8 +83,8 @@ export default function Home() {
                     <div className="card bg-base-100 shadow-xl min-w-full px-4 my-2">
                         <DecodeWithoutKeyCipherForm />
                     </div>
-                </CipherContext.Provider>
+                </>
             </main>
-        </>
+        </CipherContext.Provider>
     );
 }

@@ -11,7 +11,7 @@ export default function Results(props: Props) {
     const [displayedResult, setDisplayedResult] = useState<Array<{ key: number; plain_text: string }>>([]);
     const [pageNumber, setPageNumber] = useState("1");
 
-    const [itemsPerPage, setItemsPerPage] = useState("10");
+    const [itemsPerPage, setItemsPerPage] = useState(10);
     const maxPageNumber = Math.ceil(displayedResult.length / Number(itemsPerPage));
 
     useEffect(() => {
@@ -73,9 +73,12 @@ export default function Results(props: Props) {
                     type="number"
                     min="0"
                     onChange={(e) => {
-                        if (e.currentTarget.value == "") 
-                            setItemsPerPage(e.target.value);
-                        }}
+                        if (e.currentTarget.value != "") 
+                            setItemsPerPage(parseInt(e.currentTarget.value.replace(/^0+/, "")));
+                        else 
+                            setItemsPerPage(0);
+                        e.currentTarget.value  = itemsPerPage.toString();
+                    }}
                     className="border border-gray-300 rounded-md px-2 py-1 w-20"
                 />
                 <label
