@@ -19,19 +19,20 @@ class CesarRailFencePermCipher(BaseCipher):
         return ceasarText.decrypt(raifenceRes, ckey)
 
     def try_decrypt_without_key(self, cipher_text: str) -> dict[int, str]:
-        ceasarText = CesarCipher()
-        result = {}
+        ceasarTest = CesarCipher()
+        railfenceTest = RailFenceCipher()
         for i in range (2, len(cipher_text)):
-            for j in range(1, ceasarText.SIZE):
-                result[(i, j)] = self.decrypt(cipher_text, j, i)
-        return result
+            for j in range(1, ceasarTest.SIZE):
+                res = railfenceTest.decrypt(cipher_text, i)
+                result = ceasarTest.try_decrypt_without_key(res)
+                ckey = list(result.keys())
+                if ckey[0] != -1:
+                    return {(i, ckey[0]): result[ckey[0]]}
+            return {-1: "NOT_FOUND"}
 
-    def try_get_key(self, plain_text: str, cipher_text: str) -> int:
-        if len(plain_text) != len(cipher_text):
-            return KEY_NOT_FOUND
-        
-        for i in range (2, len(cipher_text)):
-            for j in range(1, ceasarText.SIZE):
-                if plain_text == self.decrypt(cipher_text, j, i):
-                    return (i, j)
-        return KEY_NOT_FOUND
+    def try_get_key(self, cipher_text: str) -> tuple[int, int]:       
+        keys = list(self.try_decrypt_without_key(cipher_text).keys())
+        if keys[0] == -1:
+            return NOT_FOUND_KEY
+        else:
+            return keys[0]

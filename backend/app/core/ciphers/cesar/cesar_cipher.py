@@ -1,8 +1,10 @@
-
 from core.ciphers.base_cipher import BaseCipher
 from core.ciphers.constants import CipherType, NOT_FOUND_KEY
 import core.ciphers.constants as constants
+
 import string
+import re
+from core.ciphers.dictionary import load, check, checkCommon, accuracy
 
 
 class CesarCipher(BaseCipher):
@@ -43,19 +45,24 @@ class CesarCipher(BaseCipher):
         return self.encrypt(cipher_text, self.SIZE - key)
 
     def try_decrypt_without_key(self, cipher_text: str) -> dict[int, str]:
-        result = {}
-        for i in range (1, self.SIZE):
-            result[i] = self.decrypt(cipher_text, i)
-        return result
+        for key in range(1, self.SIZE):
+            str = re.sub("[^a-zA-Z ]", "", self.decrypt(cipher_text, key))
+            if " " not in str:
+                # without spaces
+                load("../common.txt")
+                flag = checkCommon(str)
+            else:
+                # with spaces
+                load("../dictionary.txt")
+                words = str.split()
+                flag = accuracy(words)
+            if flag == True:
+                return {key: self.decrypt(cipher_text, key)}
+        return {-1: "NOT_FOUND"}
 
     def try_get_key(self, plain_text: str, cipher_text: str) -> str:
-        if len(cipher_text) != len(plain_text):
+        keys = list(self.try_decrypt_without_key(cipher_text).keys())
+        if keys[0] == -1:
             return NOT_FOUND_KEY
-        
-        for i in range(1, self.SIZE):
-            if plain_text == self.decrypt(cipher_text, i):
-                return i
-        
-        return KEY_NOT_FOUND
-
-
+        else:
+            return keys[0]

@@ -1,0 +1,61 @@
+# Words in dictionary
+words = set()
+
+
+def check(word):
+    """Return true if word is in dictionary else false"""
+    if word.lower() in words:
+        return True
+    else:
+        return False
+
+
+
+def load(dictionary):
+    """Load dictionary into memory, returning true if successful else false"""
+    file = open(dictionary, "r")
+    for line in file:
+        word = line.rstrip()
+        words.add(word)
+    file.close()
+    return True
+
+
+def size():
+    """Returns number of words in dictionary if loaded else 0 if not yet loaded"""
+    return len(words)
+
+
+def unload():
+    """Unloads dictionary from memory, returning true if successful else false"""
+    return True
+
+def checkCommon(str:str):
+    str = str.lower()
+    length = len(str)
+    l = 0
+    wordChecked = 0
+    wordAppear = 0
+    for word in words:
+        wordChecked += 1
+        if word in str:
+            wordAppear += 1
+            count = str.count(f"{word}")
+            l += count * len(word)
+    if float(l/ length) >= 0.9:
+        return True
+    else:
+        return False
+
+
+def accuracy(words: list):
+    count = 0
+    length = len(words)
+    for word in words:
+        if check(word):
+            count += 1
+    res = float(count / length)
+    if res >= 0.9:
+        return True
+    else:
+        return False
