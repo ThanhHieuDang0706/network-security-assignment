@@ -34,7 +34,7 @@ class TryGetCipherKeyRequest(BaseModel):
 class TryGetCipherKeyResponse(BaseModel):
     plain_text: str
     cipher_text: str
-    key: int | Tuple[int, ...]
+    key: Union[int, Tuple[int,...]]
 
 class CipherResponse(BaseCipherModel):
     cipher_text: str
