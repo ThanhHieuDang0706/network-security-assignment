@@ -14,7 +14,7 @@ class EncryptionResponse(BaseCipherModel):
     plain_text: str
 
 class DecryptionRequest(BaseCipherModel):
-    key: int | Tuple[int,...]
+    key: Union[int, Tuple[int,...]]
     cipher_text: str
 
 class DecryptionResponse(BaseCipherModel):
