@@ -1,12 +1,12 @@
 from ..constants import CipherType
 from pydantic import BaseModel
-from typing import Tuple
+from typing import Tuple, Union
 
 class BaseCipherModel(BaseModel):
     type: CipherType
 
 class EncryptionRequest(BaseCipherModel):
-    key: int | Tuple[int, ...]
+    key: Union[int, Tuple[int,...]]
     plain_text: str
 
 class EncryptionResponse(BaseCipherModel):
@@ -25,7 +25,7 @@ class DecryptionWithoutKeyRequest(BaseCipherModel):
     cipher_text: str
 
 class DecryptionWithoutKeyResponse(BaseModel):
-    possible_keys: dict[int | Tuple[int,...], str]
+    possible_keys: dict[Union[int, Tuple[int,...]], str]
 
 class TryGetCipherKeyRequest(BaseModel):
     plain_text: str
