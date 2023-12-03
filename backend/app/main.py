@@ -23,7 +23,11 @@ async def load_dictionary():
 
 app.add_middleware(CORSMiddleware, allow_origins=["*"], allow_credentials=True, allow_methods=["*"], allow_headers=["*"])
 
+@app.get("/", tags="Root")
+async def read_root():
+    return {"message": "Welcome to this fantastic app!"}
+
 if __name__ == "__main__":
     import uvicorn
     port=int(getenv("PORT", 8000))
-    uvicorn.run(app, host="0.0.0.0", port=port)
+    uvicorn.run(app, host="0.0.0.0", port=port, reload=True)
