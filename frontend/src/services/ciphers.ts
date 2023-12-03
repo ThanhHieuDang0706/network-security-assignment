@@ -1,4 +1,4 @@
-import { CipherType, DecryptionRequest, DecryptionResponse, DecryptionWithoutKeyRequest, DecryptionWithoutKeyResponse, EncryptionRequest, EncryptionResponse } from "@/models/ciphers";
+import { DecryptionRequest, DecryptionResponse, DecryptionWithoutKeyRequest, DecryptionWithoutKeyResponse, EncryptionRequest, EncryptionResponse } from "@/models/ciphers";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL + "/ciphers";
 
