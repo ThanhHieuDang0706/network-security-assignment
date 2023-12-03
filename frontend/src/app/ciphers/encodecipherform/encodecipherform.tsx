@@ -3,8 +3,8 @@
 import { useContext, useEffect, useState } from "react";
 import { encrypt } from "@/services/ciphers";
 import Results from "./results";
-import { CipherContext } from "@/app/page";
 import { CipherType } from "@/models/ciphers";
+import { CipherContext } from "../../cipherContext"; 
 
 export default function EncodeCipherForm() {
 

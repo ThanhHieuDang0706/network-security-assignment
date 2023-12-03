@@ -6,11 +6,8 @@ import EncodeCipherForm from "./ciphers/encodecipherform/encodecipherform";
 import DecodeCipherForm from "./ciphers/decodercipherform/decodecipherform";
 import DecodeWithoutKeyCipherForm from "./ciphers/decodewithoutkeyform/decodewithoutform";
 import classNames from "classnames";
+import { CipherContext } from "./cipherContext";
 
-export const CipherContext = createContext({
-    cipher: CipherType.Caesar,
-    setCipher: (_cipher: CipherType) => {}
-});
 
 export default function Home() {
     const selections = [
