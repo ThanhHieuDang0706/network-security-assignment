@@ -1,13 +1,13 @@
 from abc import ABC, abstractmethod
 from .constants import CipherType, NOT_FOUND_KEY, DEFAULT_KEY
-from typing import Tuple
+from typing import Tuple, Union
 
 class BaseCipher(ABC):
     def __init__(self):
         self.type = CipherType.BASE
 
     @abstractmethod
-    def encrypt(self, plain_text: str, key: int | Tuple[int,...] = DEFAULT_KEY) -> str:
+    def encrypt(self, plain_text: str, key: Union[int, Tuple[int,...]] = DEFAULT_KEY) -> str:
         pass
 
     @abstractmethod
