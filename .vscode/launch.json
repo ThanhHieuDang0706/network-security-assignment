@@ -14,6 +14,9 @@
                 "app.main:app",
                 "--reload"
             ],
+            "env": {
+                "PYDEVD_CONTAINER_RANDOM_ACCESS_MAX_ITEMS": "200000"
+            },
             "jinja": true,
             "justMyCode": true
         }

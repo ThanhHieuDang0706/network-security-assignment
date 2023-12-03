@@ -8,16 +8,15 @@ interface Props {
 }
 
 export default function Results(props: Props) {
-    const [displayedResult, setDisplayedResult] = useState<Array<{ key: number; plain_text: string }>>([]);
+    const [displayedResult, setDisplayedResult] = useState<Array<{ key: string | number; plain_text: string }>>([]);
     const [pageNumber, setPageNumber] = useState("1");
-
     const [itemsPerPage, setItemsPerPage] = useState(10);
     const maxPageNumber = Math.ceil(displayedResult.length / Number(itemsPerPage));
 
     useEffect(() => {
         setDisplayedResult(
             Object.entries(props.results).map(([key, plain_text]) => ({
-                key: Number(key),
+                key: key,
                 plain_text
             }))
         );
@@ -46,14 +45,17 @@ export default function Results(props: Props) {
                     {/* head */}
                     <thead>
                         <tr>
-                            <th>Rail</th>
+                            <th>Key(s)</th>
                             <th>Bản rõ</th>
                         </tr>
                     </thead>
                     <tbody>
                         {/* row 1 */}
                         {displayedResult.map((result, index) => {
-                            if (index >= (Number(pageNumber) - 1) * Number(itemsPerPage) && index < Number(pageNumber) * Number(itemsPerPage)) {
+                            if (
+                                index >= (Number(pageNumber) - 1) * Number(itemsPerPage) &&
+                                index < Number(pageNumber) * Number(itemsPerPage)
+                            ) {
                                 return (
                                     <tr key={result.key}>
                                         <td>{result.key}</td>
@@ -68,16 +70,15 @@ export default function Results(props: Props) {
 
             <div className="flex justify-center items-center">
                 <label className="mr-2">Số dòng hiển thị</label>
-                <input  
+                <input
                     value={itemsPerPage}
                     type="number"
                     min="0"
                     onChange={(e) => {
-                        if (e.currentTarget.value != "") 
+                        if (e.currentTarget.value != "")
                             setItemsPerPage(parseInt(e.currentTarget.value.replace(/^0+/, "")));
-                        else 
-                            setItemsPerPage(0);
-                        e.currentTarget.value  = itemsPerPage.toString();
+                        else setItemsPerPage(0);
+                        e.currentTarget.value = itemsPerPage.toString();
                     }}
                     className="border border-gray-300 rounded-md px-2 py-1 w-20"
                 />
@@ -89,12 +90,13 @@ export default function Results(props: Props) {
                 <input
                     type="number"
                     min="1"
+                    value={pageNumber}
                     max={maxPageNumber}
                     name="page number"
-                    onChange={(e) => setPageNumber((e.target.value))}
+                    onChange={(e) => setPageNumber(e.target.value)}
                     className="border border-gray-300 rounded-md px-2 py-1 w-20 ml-2"
-                />&nbsp;
-                / {maxPageNumber}
+                />
+                &nbsp; / {maxPageNumber}
             </div>
         </>
     );

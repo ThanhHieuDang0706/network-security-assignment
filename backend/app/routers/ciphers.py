@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, status
-from core.ciphers.models.models import EncryptionRequest, DecryptionRequest, DecryptionWithoutKeyRequest, TryGetCipherKeyRequest, CipherResponse, DecryptionWithoutKeyResponse, EncryptionResponse, DecryptionResponse
-from core.ciphers.ciphers import find_cipher
+from ..core.ciphers.models.models import EncryptionRequest, DecryptionRequest, DecryptionWithoutKeyRequest, TryGetCipherKeyRequest, CipherResponse, DecryptionWithoutKeyResponse, EncryptionResponse, DecryptionResponse
+from ..core.ciphers.ciphers import find_cipher
 from fastapi.responses import JSONResponse as J
 
 router = APIRouter(
@@ -8,6 +8,7 @@ router = APIRouter(
     tags=["ciphers"],
     responses={404: {"description": "Not found"}},
 )
+
 
 @router.post("/encrypt", response_model=EncryptionResponse)
 async def encrypt(request: EncryptionRequest):
@@ -54,17 +55,17 @@ async def decrypt_without_key(request: DecryptionWithoutKeyRequest):
         print(e)
         return J(HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Internal server error"))
 
-@router.post("/try-get-key")
-async def try_get_key(request: TryGetCipherKeyRequest):
-    """Tries to get the key used to encrypt a plain text into a cipher text using a cipher"""
-    try:
-        cipher = find_cipher(request.type)
-        if (cipher is None):
-            return HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Cipher not found")
+# @router.post("/try-get-key")
+# async def try_get_key(request: TryGetCipherKeyRequest):
+#     """Tries to get the key used to encrypt a plain text into a cipher text using a cipher"""
+#     try:
+#         cipher = find_cipher(request.type)
+#         if (cipher is None):
+#             return HTTPException(status_code=status.HTTP_400_BAD_REQUEST, detail="Cipher not found")
     
-        key = cipher.try_get_key(request.plain_text, request.cipher_text)
-        return CipherResponse(type=request.type, key=key, cipher_text=request.cipher_text, plain_text=request.plain_text),
+#         key = cipher.try_get_key(request.plain_text, request.cipher_text)
+#         return CipherResponse(type=request.type, key=key, cipher_text=request.cipher_text, plain_text=request.plain_text),
         
-    except Exception as e: 
-        print(e)
-        return J(HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Internal server error"))
+#     except Exception as e: 
+#         print(e)
+#         return J(HTTPException(status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail="Internal server error"))

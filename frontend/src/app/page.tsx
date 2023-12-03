@@ -1,7 +1,7 @@
 "use client";
 import Image from "next/image";
 import { CipherType } from "@/models/ciphers";
-import { ReactNode, createContext, useContext, useState } from "react";
+import { createContext, useState } from "react";
 import EncodeCipherForm from "./ciphers/encodecipherform/encodecipherform";
 import DecodeCipherForm from "./ciphers/decodercipherform/decodecipherform";
 import DecodeWithoutKeyCipherForm from "./ciphers/decodewithoutkeyform/decodewithoutform";
@@ -9,7 +9,7 @@ import classNames from "classnames";
 
 export const CipherContext = createContext({
     cipher: CipherType.Caesar,
-    setCipher: (cipher: CipherType) => {}
+    setCipher: (_cipher: CipherType) => {}
 });
 
 export default function Home() {

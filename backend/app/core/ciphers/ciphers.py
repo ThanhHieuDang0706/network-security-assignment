@@ -1,8 +1,8 @@
 from typing import List
-from core.ciphers.cesar.cesar_cipher import CesarCipher
-from core.ciphers.rail_fence.rail_fence_cipher import RailFenceCipher
-from core.ciphers.cesar_rail_fence_perm.cesar_rail_fence_perm_cipher import CesarRailFencePermCipher
-from core.ciphers.base_cipher import BaseCipher
+from .cesar.cesar_cipher import CesarCipher
+from .rail_fence.rail_fence_cipher import RailFenceCipher
+from .cesar_rail_fence_perm.cesar_rail_fence_perm_cipher import CesarRailFencePermCipher
+from .base_cipher import BaseCipher
 
 def get_ciphers() -> List[BaseCipher]:
     """

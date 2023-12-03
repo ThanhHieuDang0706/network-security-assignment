@@ -9,7 +9,7 @@ export interface CipherBase {
 }
 
 export interface EncryptionRequest extends CipherBase {
-    key: number;
+    key: number | [number, number];
     plain_text: string
 }
 
@@ -19,7 +19,7 @@ export interface EncryptionResponse extends CipherBase {
 }
 
 export interface DecryptionRequest extends CipherBase {
-    key: number;
+    key: number | [number, number];
     cipher_text: string
 }
 
@@ -35,5 +35,6 @@ export interface DecryptionWithoutKeyRequest extends CipherBase {
 export interface DecryptionWithoutKeyResponse {
     possible_keys: {
         [key: number]: string;
+        [keyTuple: string]: string;
     }
 }

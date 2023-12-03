@@ -1,5 +1,6 @@
-from core.ciphers.base_cipher import BaseCipher
-from core.ciphers.constants import CipherType, NOT_FOUND_KEY
+from ..base_cipher import BaseCipher
+from ..constants import CipherType, NOT_FOUND_KEY, ENGLISH_FREQUENCIES
+from ..utils import is_likely_english
 
 PLACE_HOLDER = "$"
 
@@ -90,16 +91,24 @@ class RailFenceCipher(BaseCipher):
 
     def try_decrypt_without_key(self, cipher_text: str) -> dict[int, str]:
         result = {}
-        for i in range(2, len(cipher_text)):
-            result[i] = self.decrypt(cipher_text, i)
-        return result
-
-    def try_get_key(self, plain_text: str, cipher_text: str) -> int:
-        if (len(plain_text) != len(cipher_text)):
-            return NOT_FOUND_KEY
         
         for i in range(2, len(cipher_text)):
-            if self.decrypt(cipher_text, i) == plain_text:
-                return i
+            result[i] = self.decrypt(cipher_text, i)
+
+            if (is_likely_english(result[i])):
+                return {
+                    i: result[i]
+                }
             
-        return NOT_FOUND_KEY
+        return result
+    # def try_get_key(self, plain_text: str, cipher_text: str) -> int:
+    #     if (len(plain_text) != len(cipher_text)):
+    #         return NOT_FOUND_KEY
+        
+    #     for i in range(2, len(cipher_text)):
+    #         if self.decrypt(cipher_text, i) == plain_text:
+    #             return i
+            
+    #     return NOT_FOUND_KEY
+
+        

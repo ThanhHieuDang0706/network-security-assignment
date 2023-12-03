@@ -1,12 +1,12 @@
-from core.ciphers.constants import CipherType
+from ..constants import CipherType
 from pydantic import BaseModel
-from typing import Optional
+from typing import Tuple
 
 class BaseCipherModel(BaseModel):
     type: CipherType
 
 class EncryptionRequest(BaseCipherModel):
-    key: int
+    key: int | Tuple[int, ...]
     plain_text: str
 
 class EncryptionResponse(BaseCipherModel):
@@ -14,7 +14,7 @@ class EncryptionResponse(BaseCipherModel):
     plain_text: str
 
 class DecryptionRequest(BaseCipherModel):
-    key: int
+    key: int | Tuple[int,...]
     cipher_text: str
 
 class DecryptionResponse(BaseCipherModel):
@@ -25,7 +25,7 @@ class DecryptionWithoutKeyRequest(BaseCipherModel):
     cipher_text: str
 
 class DecryptionWithoutKeyResponse(BaseModel):
-    possible_keys: dict[int, str]
+    possible_keys: dict[int | Tuple[int,...], str]
 
 class TryGetCipherKeyRequest(BaseModel):
     plain_text: str
@@ -34,7 +34,7 @@ class TryGetCipherKeyRequest(BaseModel):
 class TryGetCipherKeyResponse(BaseModel):
     plain_text: str
     cipher_text: str
-    key: int
+    key: int | Tuple[int, ...]
 
 class CipherResponse(BaseCipherModel):
     cipher_text: str
