@@ -8,15 +8,44 @@ class BaseCipher(ABC):
 
     @abstractmethod
     def encrypt(self, plain_text: str, key: Union[int, Tuple[int,...]] = DEFAULT_KEY) -> str:
-        pass
+            """
+            Encrypts the given plain text using the specified key.
+
+            Args:
+                plain_text (str): The plain text to be encrypted.
+                key (Union[int, Tuple[int,...]]): The encryption key. Defaults to DEFAULT_KEY.
+
+            Returns:
+                str: The encrypted text.
+            """
+            pass
 
     @abstractmethod
     def decrypt(self, plain_text: str, key = DEFAULT_KEY) -> str:
-        pass
+            """
+            Decrypts the given plain text using the specified key.
+
+            Args:
+                plain_text (str): The text to be decrypted.
+                key (str): The encryption key. Defaults to DEFAULT_KEY.
+
+            Returns:
+                str: The decrypted text.
+            """
+            pass
 
     @abstractmethod
-    def try_decrypt_without_key(self, cipher_text: str) -> dict[int, str]:    
-        pass
+    def try_decrypt_without_key(self, cipher_text: str) -> dict[int, str]:
+            """
+            Tries to decrypt the given cipher text without a key.
+
+            Args:
+                cipher_text (str): The cipher text to decrypt.
+
+            Returns:
+                dict[int, str]: A dictionary containing possible decryption results, where the key is the attempt number and the value is the decrypted text.
+            """
+            pass
 
     # @abstractmethod
     # def try_get_key(self, plain_text: str, cipher_text: str) -> int:

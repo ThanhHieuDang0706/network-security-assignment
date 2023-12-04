@@ -1,5 +1,5 @@
 from typing import List
-from .cesar.cesar_cipher import CesarCipher
+from .cesar.cesar_cipher import CaesarCipher
 from .rail_fence.rail_fence_cipher import RailFenceCipher
 from .cesar_rail_fence_perm.cesar_rail_fence_perm_cipher import CesarRailFencePermCipher
 from .base_cipher import BaseCipher
@@ -11,7 +11,7 @@ def get_ciphers() -> List[BaseCipher]:
     Returns:
         List: A list of available ciphers.
     """
-    ciphers = [CesarCipher(), RailFenceCipher(), CesarRailFencePermCipher()]
+    ciphers = [CaesarCipher(), RailFenceCipher(), CesarRailFencePermCipher()]
     return ciphers
 
 def find_cipher(cipher_type: str) -> BaseCipher:

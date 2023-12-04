@@ -1,101 +1,50 @@
 
 from ..base_cipher import BaseCipher
-from ..constants import CipherType, NOT_FOUND_KEY
+from ..constants import CipherType, MIN_CHARS_TO_DO_FREQUENCY_ANALYSIS
 from ..utils import is_likely_english
 import string
+from collections import Counter
 
 
-class CesarCipher(BaseCipher):
+class CaesarCipher(BaseCipher):
     alphabet = tuple(string.ascii_uppercase)
-    SIZE = len(alphabet)
+    ALPHABET_SIZE = len(alphabet)
 
     def __init__(self):
         self.type = CipherType.CESAR
 
+    def get_same_case_alphabet(self, letterToTransform: str, targetLetter: str) -> str:
+        if targetLetter.isupper():
+            return letterToTransform.upper()
+        else:
+            return letterToTransform.lower()
+
     def encrypt(self, plain_text: str, key: str) -> str:
-        # create sub alphabet
-        subAlphabet = []
-        for i in range(self.SIZE):
-            if i + key >= self.SIZE:
-                subAlphabet.append(self.alphabet[key - (self.SIZE - i)])
-            else:
-                subAlphabet.append(self.alphabet[i + key])
-
-        # create a dict store key = character in alphabet corresponding to value = character in sub alphabet
-        arr = {}
-        for i in range(self.SIZE):
-            arr[f"{self.alphabet[i]}"] = f"{subAlphabet[i]}"
-        # string store cipher text
-        str = ""
-        # start to encrypt
-        for i in range(len(plain_text)):
-            if plain_text[i].isupper():
-                str += arr[f"{plain_text[i]}"]
-            elif plain_text[i].islower():
-                str += arr[f"{plain_text[i].upper()}"].lower()
-            else:
-                str += plain_text[i]
-
-        # return value
-        return str
+        sub_alphabet = [self.alphabet[(i + key) % self.ALPHABET_SIZE] for i in range(self.ALPHABET_SIZE)]
+        mapping = {self.alphabet[i]: sub_alphabet[i] for i in range(self.ALPHABET_SIZE)}
+        return ''.join(self.get_same_case_alphabet(mapping[c.upper()], c) if c.isalpha() else c for c in plain_text)
 
     def decrypt(self, cipher_text: str, key: int) -> str:
-        return self.encrypt(cipher_text, self.SIZE - key)
+        return self.encrypt(cipher_text, self.ALPHABET_SIZE - key)
 
     def try_decrypt_without_key(self, cipher_text: str) -> dict[int, str]:
-            """
-            Tries to decrypt the given cipher text without knowing the key.
-            
-            Args:
-                cipher_text (str): The cipher text to decrypt.
-            
-            Returns:
-                dict[int, str]: A dictionary containing possible keys and their corresponding decrypted texts.
-            """
             result = {}
 
             # we use frequency analysis to find the key if the cipher_text is long enough
-            if (len(cipher_text) > 100):
-                # count frequency of each character in the cipher text
-                freq = {}
-                for i in range(self.SIZE):
-                    freq[f"{self.alphabet[i]}"] = cipher_text.lower().count(self.alphabet[i].lower())
-                
-                # find the most frequent character
-                maxFreq = 0
-                maxFreqChar = ""
-                for i in range(self.SIZE):
-                    if freq[self.alphabet[i]] > maxFreq:
-                        maxFreq = freq[self.alphabet[i]]
-                        maxFreqChar = self.alphabet[i]
-                
-                # find the key
-                key = self.alphabet.index(maxFreqChar) - self.alphabet.index("E")
-                if key < 0:
-                    key += self.SIZE
+            if len(cipher_text) > MIN_CHARS_TO_DO_FREQUENCY_ANALYSIS:
+                char_frequency = Counter(char.lower() for char in cipher_text if char != ' ')
+                max_freq_char = char_frequency.most_common(1)[0][0]
+                if (max_freq_char.upper() == 'E'):
+                    key = (self.alphabet.index(max_freq_char.upper()) - self.alphabet.index("E")) % self.ALPHABET_SIZE
+                    result = {key: self.decrypt(cipher_text, key)}
+                    return result
 
-                return {
-                    key: self.decrypt(cipher_text, key)
-                }
-
-
-            for i in range (1, self.SIZE):
+            # if the cipher_text is short, we try all possible keys
+            for i in range(1, self.ALPHABET_SIZE):
                 result[i] = self.decrypt(cipher_text, i)
-                
-                if (is_likely_english(result[i])):
-                    return {
-                        i: result[i]
-                    }
-            return result
+                if is_likely_english(result[i]):
+                    return {i: result[i]}
 
-    # def try_get_key(self, plain_text: str, cipher_text: str) -> str:
-    #     if len(cipher_text) != len(plain_text):
-    #         return NOT_FOUND_KEY
-        
-    #     for i in range(1, self.SIZE):
-    #         if plain_text == self.decrypt(cipher_text, i):
-    #             return i
-        
-    #     return NOT_FOUND_KEY
+            return result
 
 

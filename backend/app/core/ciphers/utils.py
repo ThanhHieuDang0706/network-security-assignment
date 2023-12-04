@@ -20,6 +20,6 @@ def is_likely_english(text: str) -> bool:
         if word in ENGLISH_DICTIONARY:
             num_of_english_words += 1                
     
-    if (num_of_english_words / num_of_words) >= 0.5: 
+    if (num_of_english_words / num_of_words) >= 0.8: 
         return True
     return False

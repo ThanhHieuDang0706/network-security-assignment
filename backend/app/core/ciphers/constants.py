@@ -10,6 +10,8 @@ class CipherType(str, Enum):
     RAIL_FENCE = "rail_fence",
     PERM_CESAR_RAIL_FENCE = "perm_cesar_rail_fence",
 
+MIN_CHARS_TO_DO_FREQUENCY_ANALYSIS = 100
+
 ENGLISH_FREQUENCIES = {
     'A': 0.08167,
     'B': 0.01492,
