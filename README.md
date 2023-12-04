@@ -2,8 +2,8 @@
 Cesar, Rail Fence and its permutation
 
 ## Pre-requisites
-- Python 3.6 or above
-- pip
+- **Python 3.6** or above
+- **pip**
 - NodeJS 18 or above
 - npm
 
@@ -15,3 +15,5 @@ Cesar, Rail Fence and its permutation
 - Run the frontend server by running `npm run dev`
 - Open `http://localhost:3000` in your browser
 - Enjoy!
+
+Or you can just visit the deployed version [here](https://network-security-assignment.vercel.app/)
