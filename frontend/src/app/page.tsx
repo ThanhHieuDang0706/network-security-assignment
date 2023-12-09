@@ -7,6 +7,7 @@ import DecodeCipherForm from "./ciphers/decodercipherform/decodecipherform";
 import DecodeWithoutKeyCipherForm from "./ciphers/decodewithoutkeyform/decodewithoutform";
 import classNames from "classnames";
 import { CipherContext } from "./cipherContext";
+import CipherMenu from "./CipherMenu";
 
 
 export default function Home() {
@@ -25,11 +26,13 @@ export default function Home() {
         }
     ];
 
+
+
     const [cipher, setCipher] = useState(CipherType.Caesar);
 
     return (
         <CipherContext.Provider value={{ cipher, setCipher }}>
-            <div className="px-32 bg-slate-100 navbar fixed z-50">
+            <div className="sm:px-0 md:px-32 bg-slate-100 navbar fixed z-50">
                 <div className="flex-none">
                     <a className="btn btn-square btn-ghost">
                         <Image
@@ -42,9 +45,9 @@ export default function Home() {
                         />
                     </a>
                 </div>
-                <div className="flex-1 gap-4">
+                <div className="flex-1 gap-4 justify-between sm:justify-between md:justify-normal">
                     <a className="btn btn-ghost normal-case text-xl">Bách Khoa Cipher</a>
-                    <nav className="tabs cursor-pointer flex-1 gap-2 ">
+                    <nav className="hidden sm:hidden md:block flex-nowrap tabs cursor-pointer flex-3 gap-2">
                         {selections.map((value) => {
                             return (
                                 <a
@@ -54,10 +57,8 @@ export default function Home() {
                                         cipher == value.value ? "tab-active tab-border-2 border-b-2 transition-all accent-current" : ""
                                     )}
                                     onClick={(e) => {
-                                        console.log(e);
                                         e.preventDefault();
                                         e.stopPropagation();
-                                        console.log(setCipher);
                                         setCipher(value.value);
                                     }}>
                                     {value.name}
@@ -65,9 +66,10 @@ export default function Home() {
                             );
                         })}
                     </nav>
+                    <CipherMenu value={cipher} ciphers={selections} onCipherSelected={setCipher} className="sm:flex md:hidden hidden" />
                 </div>
             </div>
-            <main className="flex bg-slate-50 flex-col py-24 px-32 card">
+            <main className="flex bg-slate-50 flex-col md:px-32 md:py-24 card sm:px-2 sm:py-16">
                 <>
                     <div className="card bg-base-100 shadow-xl min-w-full px-4 my-2">
                         <EncodeCipherForm />

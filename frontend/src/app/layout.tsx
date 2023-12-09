@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "@fortawesome/fontawesome-svg-core/styles.css"; 
 import { config } from "@fortawesome/fontawesome-svg-core";
+import Image from "next/image";
+import Head from "next/head";
 
 const inter = Inter({ subsets: ["latin"] });
 config.autoAddCss = false;
@@ -10,7 +12,13 @@ config.autoAddCss = false;
 export const metadata: Metadata = {
     title: "Bách Khoa Cipher",
     description: "Simple cipher tool for encrypting and decrypting text",
-    viewport: "width=device-width, initial-scale=1"
+    viewport: "width=device-width, initial-scale=1",
+    icons: [
+        {
+            rel: "icon",
+            url: "/760px-HCMUT_official_logo.png",
+        }
+    ]
 };
 
 
