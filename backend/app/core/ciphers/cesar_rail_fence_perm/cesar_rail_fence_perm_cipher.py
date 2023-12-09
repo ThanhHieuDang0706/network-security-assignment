@@ -3,6 +3,8 @@ from ..constants import CipherType, NOT_FOUND_KEY
 from ..cesar.cesar_cipher import CaesarCipher
 from ..rail_fence.rail_fence_cipher import RailFenceCipher
 from typing import Tuple
+from ..utils import is_likely_english
+
 class CesarRailFencePermCipher(BaseCipher):
     def __init__(self):
         self.type = CipherType.PERM_CESAR_RAIL_FENCE
@@ -31,9 +33,16 @@ class CesarRailFencePermCipher(BaseCipher):
         railFenceCipher = RailFenceCipher()
         result = {}
 
-        ceasarResults = ceasarCipher.try_decrypt_without_key(cipher_text)
-        for ceasarKey in ceasarResults.keys():
-            railFenceRes = railFenceCipher.try_decrypt_without_key(ceasarResults[ceasarKey])
-            for railFenceKey in railFenceRes.keys():
-                result[(ceasarKey, railFenceKey)] = railFenceRes[railFenceKey]
-        return result
+        for railFenceKey in range(2, len(cipher_text) // 2 + 1):
+            railFenceRes = railFenceCipher.decrypt(cipher_text, railFenceKey)
+            ceasarRes = ceasarCipher.try_decrypt_without_key(railFenceRes)
+            
+            if len(ceasarRes) == 1:
+                item = list(ceasarRes.items())[0]
+                if is_likely_english(item[1]):
+                    return {
+                        (item[0], railFenceKey): item[1]
+                    }
+            else:
+                for ceasarKey in ceasarRes.keys():
+                    result[(ceasarKey, railFenceKey)] = ceasarRes[ceasarKey]
