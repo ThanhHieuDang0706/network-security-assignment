@@ -16,7 +16,8 @@ export const metadata: Metadata = {
     icons: [
         {
             rel: "icon",
-            url: "/760px-HCMUT_official_logo.png",
+            url: "/icon.png",
+            type: "image/png"
         }
     ]
 };

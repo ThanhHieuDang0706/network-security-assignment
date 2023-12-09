@@ -1,6 +1,6 @@
+"use client";
 import { CipherType } from "@/models/ciphers";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 
 export interface CipherMenuProps {
     className?: string;
